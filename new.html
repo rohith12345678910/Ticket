@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ticket Booking System</title>
+<style>
+    /* CSS styling */
+    .container {
+        text-align: center;
+    }
+    .seat {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        border: 1px solid black;
+        margin: 5px;
+        line-height: 30px;
+    }
+    .booked {
+        background-color: gray;
+    }
+    #show-more {
+    background-color: #008cba;
+    font-size: 18px;
+    border: none;
+    color: #fff;
+    padding: 10px 20px;
+    text-align: center;
+    display: block;
+    margin: 30px auto;
+    border-radius: 5px;
+    cursor: pointer;
+    display: none;
+}
+
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>Welcome to the  Booking System</h1>
+   
+        <button onclick="viewAvailableSeats()" style="background-color: #008cba;
+        font-size: 18px;color: #fff;padding: 10px 20px;text-align: center;border-radius: 5px;
+        cursor: pointer;border: none;">View Available Seats</button>
+        <button onclick="bookTicket()"  style="background-color: #008cba;
+        font-size: 18px;color: #fff;padding: 10px 20px;text-align: center;border-radius: 5px;
+        cursor: pointer;border: none;">Book a Ticket</button>
+   
+    <div id="seats"></div>
+    <div id="availableSeatsCount"></div>
+</div>
+
+<script>
+    // JavaScript logic
+    const totalSeats = 100;
+    let seatAvailability = new Array(totalSeats).fill(false);
+
+    function viewAvailableSeats() {
+        const seatsContainer = document.getElementById('seats');
+        seatsContainer.innerHTML = "<h2><div id=availableSeatsCount></div> </h2>";
+        for (let i = 0; i < totalSeats; i++) {
+            const seat = document.createElement('div');
+            seat.className = 'seat';
+            if (seatAvailability[i]) {
+                seat.classList.add('booked');
+                seat.textContent = 'X';
+            } else {
+                seat.textContent = 'O';
+            }
+            seatsContainer.appendChild(seat);
+        }
+        updateAvailableSeatsCount();
+    }
+
+    function bookTicket() {
+        const seatNumber = parseInt(prompt("Enter the seat number you want to book (1-100):"));
+        if (seatNumber < 1 || seatNumber > totalSeats || isNaN(seatNumber)) {
+            alert("Invalid seat number. Please choose a seat between 1 and " + totalSeats);
+            return;
+        }
+
+        if (seatAvailability[seatNumber - 1]) {
+            alert("Sorry, the seat is already booked. Please choose another seat.");
+        } else {
+            seatAvailability[seatNumber - 1] = true;
+            alert("Ticket booked successfully! Enjoy your show.");
+            updateAvailableSeatsCount();
+        }
+    }
+
+    function updateAvailableSeatsCount() {
+        const availableSeatsCount = seatAvailability.filter(seat => !seat).length;
+        document.getElementById('availableSeatsCount').textContent = `Available Seats: ${availableSeatsCount}`;
+    }
+</script>
+</body>
+</html>
